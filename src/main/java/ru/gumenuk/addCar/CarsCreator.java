@@ -1,43 +1,33 @@
 package ru.gumenuk.addCar;
 
-import ru.gumenuk.CarDatabaseProvider;
-import ru.gumenuk.Cars;
+import ru.gumenuk.connection.CarDatabaseProvider;
+import ru.gumenuk.connection.Car;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 
 import java.sql.SQLException;
-import java.util.List;
+import java.util.Scanner;
 
 public class CarsCreator implements CarsAdder {
-    private CarDatabaseProvider databaseProvider;
 
     public CarsCreator(CarDatabaseProvider databaseProvider) {
-        this.databaseProvider = databaseProvider;
     }
 
 
     @Override
-    public void addCar(int id, String model, String color, int year, String manufacturer, String licensePlate) {
-        try (Connection connection = databaseProvider.getConnection();
+    public void addCar() {
+        try (Connection connection = CarDatabaseProvider.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "INSERT INTO cars (id, model, color, year, manufacturer, license_plate) VALUES (?, ?, ?, ?, ?, ?)")) {
+                     "INSERT INTO cars ( model, color, year, manufacturer, license_plate) VALUES ( ?, ?, ?, ?, ?)")) {
 
-            Cars car = new Cars();
+            Car car = collectCarDetails();
 
-            car.setId(id);
-            car.setModel(model);
-            car.setColor(color);
-            car.setYear(year);
-            car.setManufacturer(manufacturer);
-            car.setLicensePlate(licensePlate);
-
-            statement.setInt(1, car.getId());
-            statement.setString(2, car.getModel());
-            statement.setString(3, car.getColor());
-            statement.setInt(4, car.getYear());
-            statement.setString(5, car.getManufacturer());
-            statement.setString(6, car.getLicensePlate());
+            statement.setString(1, car.getModel());
+            statement.setString(2, car.getColor());
+            statement.setInt(3, car.getYear());
+            statement.setString(4, car.getManufacturer());
+            statement.setString(5, car.getLicensePlate());
 
             int rowsAffected = statement.executeUpdate();
 
@@ -45,15 +35,44 @@ public class CarsCreator implements CarsAdder {
             if (rowsAffected > 0) {
                 System.out.println("A new car has been added successfully!");
             }
-            List<Cars> carsAfterAdding = databaseProvider.selectAll();
-            /*System.out.println("\nСписок всех автомобилей после добавления:");
-            for (Cars currentCar : carsAfterAdding) {
-                System.out.println(currentCar);
-            }*/
+
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }
     }
+
+    private Car collectCarDetails() {
+        Scanner scanner = new Scanner(System.in);
+        Car car = new Car();
+
+        String[] questions = {
+                "Введите модель автомобиля:",
+                "Введите цвет автомобиля:",
+                "Введите год выпуска автомобиля:",
+                "Введите производителя автомобиля:",
+                "Введите номер автомобиля:"
+        };
+
+        String[] inputs = new String[5];
+
+        for (int i = 0; i < questions.length; i++) {
+            System.out.println(questions[i]);
+            if (i == 2) {
+                car.setYear(scanner.nextInt());
+            } else {
+                inputs[i] = scanner.next();
+            }
+        }
+
+        car.setModel(inputs[0]);
+        car.setColor(inputs[1]);
+        car.setManufacturer(inputs[3]);
+        car.setLicensePlate(inputs[4]);
+
+        return car;
+    }
+
+
 }
 
 

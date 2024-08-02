@@ -1,9 +1,9 @@
-package ru.gumenuk.addCar;
+package ru.gumenuk.connection;
 
 
-public enum SqlQueriesAdd {
+public enum SqlQueries {
 
-    ADD_ALL_CARS("SELECT * FROM cars;");
+    SELECT_ALL_CARS("SELECT * FROM cars;");
 
     private final String query;
 
@@ -11,10 +11,11 @@ public enum SqlQueriesAdd {
         return query;
     }
 
-    SqlQueriesAdd(String query) {
+    SqlQueries(String query) {
         this.query = query;
     }
 }
+
 
 
 

@@ -1,4 +1,4 @@
-package ru.gumenuk.addCar;
+package ru.gumenuk.deleteCar;
 
 public interface CarsRemove {
     void removeCar(int id);

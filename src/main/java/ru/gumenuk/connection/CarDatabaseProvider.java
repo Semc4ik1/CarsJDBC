@@ -1,4 +1,4 @@
-package ru.gumenuk;
+package ru.gumenuk.connection;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -9,14 +9,14 @@ public class CarDatabaseProvider {
     private static final String USERNAME = "postgres";
     private static final String PASSWORD = "twerk228";
 
-    public List<Cars> selectAll() {
+    public List<Car> selectAll() {
         try (Connection connection = getConnection()) {
             PreparedStatement statement = connection.prepareStatement(SqlQueries.SELECT_ALL_CARS.getQuery());
             ResultSet resultSet = statement.executeQuery();
 
-            List<Cars> cars = new ArrayList<>();
+            List<Car> cars = new ArrayList<>();
             while (resultSet.next()) {
-                Cars car = new Cars();
+                Car car = new Car();
 
                 car.setId(resultSet.getInt(1));
                 car.setModel(resultSet.getString(2));
@@ -27,10 +27,7 @@ public class CarDatabaseProvider {
                 cars.add(car);
 
             }
-           /* for (Cars car : cars) {
-                System.out.println("Начальный список автомобилей");
-                System.out.println(car);
-            }*/
+
             return cars;
         } catch (SQLException e) {
             throw new RuntimeException(e);

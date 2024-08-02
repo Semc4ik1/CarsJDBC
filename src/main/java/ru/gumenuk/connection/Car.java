@@ -1,6 +1,6 @@
-package ru.gumenuk;
+package ru.gumenuk.connection;
 
-public class Cars {
+public class Car {
     private int id;
     private String model;
     private String color;
@@ -8,8 +8,7 @@ public class Cars {
     private String manufacturer;
     private String licensePlate;
 
-
-    public Cars() {
+    public Car(int id, String model, String color, int year, String manufacturer, String licensePlate) {
         this.id = id;
         this.model = model;
         this.color = color;
@@ -18,6 +17,8 @@ public class Cars {
         this.licensePlate = licensePlate;
     }
 
+    public Car() {
+    }
 
     public int getId() {
         return id;

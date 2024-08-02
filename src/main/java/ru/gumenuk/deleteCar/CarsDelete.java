@@ -1,21 +1,19 @@
-package ru.gumenuk.addCar;
+package ru.gumenuk.deleteCar;
 
-import ru.gumenuk.CarDatabaseProvider;
+import ru.gumenuk.connection.CarDatabaseProvider;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class CarsDelete implements CarsRemove {
-    private CarDatabaseProvider databaseProvider;
 
     public CarsDelete(CarDatabaseProvider databaseProvider) {
-        this.databaseProvider = databaseProvider;
     }
 
     @Override
     public void removeCar(int id) {
-        try (Connection connection = databaseProvider.getConnection();
+        try (Connection connection = CarDatabaseProvider.getConnection();
              PreparedStatement statement = connection.prepareStatement("DELETE FROM cars WHERE id = ?")) {
              statement.setInt(1,id);
             int rowsAffected = statement.executeUpdate();
