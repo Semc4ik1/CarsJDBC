@@ -1,41 +1,50 @@
 package ru.gumenuk.connection;
 
-import ru.gumenuk.addCar.CarsCreator;
-import ru.gumenuk.addCar.CarsUpdate;
-import ru.gumenuk.deleteCar.CarsDelete;
-
 import java.util.List;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
         CarDatabaseProvider dbProvider = new CarDatabaseProvider();
+        Scanner scanner = new Scanner(System.in);
 
-        CarsDelete carsDeleter = new CarsDelete(dbProvider);
-        int carIdToDelete = 1;
-        carsDeleter.removeCar(carIdToDelete);
+        while (true) {
+            System.out.println("\nВыберите действие:");
+            System.out.println("1 - Добавить автомобиль");
+            System.out.println("2 - Изменить автомобиль");
+            System.out.println("3 - Удалить автомобиль");
+            System.out.println("4 - Показать все автомобили");
+            System.out.println("5 - Выход");
+            System.out.print("Ваш выбор: ");
 
-        List<Car> carAfterDeletion = dbProvider.selectAll();
-        System.out.println("\nСписок всех автомобилей после удаления:");
-        for (Car car : carAfterDeletion) {
-            System.out.println(car);
-        }
+            int choice = scanner.nextInt();
+            scanner.nextLine();
 
-        CarsCreator carsCreator = new CarsCreator(dbProvider);
-        carsCreator.addCar();
-
-        List<Car> carAfterAdding = dbProvider.selectAll();
-        System.out.println("\nСписок всех автомобилей после добавления:");
-        for (Car car : carAfterAdding) {
-            System.out.println(car);
-        }
-
-        CarsUpdate carsUpdater = new CarsUpdate();
-        carsUpdater.updateCar();
-
-        List<Car> carAfterUpdating = dbProvider.selectAll();
-        System.out.println("\nСписок всех автомобилей после обновления:");
-        for (Car car : carAfterUpdating) {
-            System.out.println(car);
+            switch (choice) {
+                case 1:
+                    dbProvider.addCar();
+                    break;
+                case 2:
+                    dbProvider.updateCar();
+                case 3:
+                    System.out.print("Введите ID автомобиля для удаления: ");
+                    int carIdToDelete = scanner.nextInt();
+                    dbProvider.removeCar(carIdToDelete);
+                    break;
+                case 4:
+                    List<Car> allCars = dbProvider.selectAll();
+                    System.out.println("\nСписок всех автомобилей:");
+                    for (Car car : allCars) {
+                        System.out.println(car);
+                    }
+                    break;
+                case 5:
+                    System.out.println("Выход из программы.");
+                    scanner.close();
+                    return;
+                default:
+                    System.out.println("Неверный выбор. Пожалуйста, попробуйте снова.");
+            }
         }
     }
 
