@@ -6,6 +6,9 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         CarDatabaseProvider dbProvider = new CarDatabaseProvider();
+        CarDetailsCollector collector = new CarDetailsCollector();
+        Car car;
+        car = collector.collectCarDetails();
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
@@ -24,7 +27,8 @@ public class Main {
             scanner.nextLine();
 
             switch (choice) {
-                case 1 -> dbProvider.addCar();
+
+                case 1 -> dbProvider.addCar(car);
 
                 case 2 -> dbProvider.updateCar();
                 case 3 -> {
@@ -35,8 +39,8 @@ public class Main {
                 case 4 -> {
                     List<Car> allCars = dbProvider.selectAll();
                     System.out.println("\nСписок всех автомобилей:");
-                    for (Car car : allCars) {
-                        System.out.println(car);
+                    for (Car par : allCars) {
+                        System.out.println(par);
                     }
                 }
                 case 5 -> {

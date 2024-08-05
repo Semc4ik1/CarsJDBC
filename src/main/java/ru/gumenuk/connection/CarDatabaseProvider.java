@@ -50,13 +50,10 @@ public class CarDatabaseProvider {
         }
     }
 
-    public void addCar() {
+    public void addCar(Car car) {
         try (Connection connection = CarDatabaseProvider.getConnection();
              PreparedStatement statement = connection.prepareStatement(
                      SqlQueries.INSERT_CAR.getQuery())) {
-
-            CarDetailsCollector collector = new CarDetailsCollector();
-            Car car = collector.collectCarDetails();
 
             statement.setString(1, car.getModel());
             statement.setString(2, car.getColor());
@@ -95,6 +92,7 @@ public class CarDatabaseProvider {
                     return;
                 }
             }
+
             System.out.println("""
                     Какое поле вы хотите изменить?
                     1 - Модель автомобиля
