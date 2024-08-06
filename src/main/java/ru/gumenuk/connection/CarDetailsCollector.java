@@ -3,33 +3,55 @@ package ru.gumenuk.connection;
 import java.util.Scanner;
 
 public class CarDetailsCollector {
-    protected Car collectCarDetails() {
-        Scanner scanner = new Scanner(System.in);
+    public Car collectNewCar(Scanner scanner) {
+
         Car car = new Car();
 
-        String[] questions = {
-                "Введите модель автомобиля:",
-                "Введите цвет автомобиля:",
-                "Введите год выпуска автомобиля:",
-                "Введите производителя автомобиля:",
-                "Введите номер автомобиля:"
-        };
+        System.out.println("Введите модель автомобиля: ");
+        car.setModel(scanner.nextLine());
+        System.out.println("Введите цвет автомобиля: ");
+        car.setColor(scanner.nextLine());
+        System.out.println("Введите год выпуска автомобиля: ");
+        car.setYear(Integer.parseInt(scanner.nextLine()));
+        System.out.println("Введите производителя автомобиля: ");
+        car.setManufacturer(scanner.nextLine());
+        System.out.println("Введите номер автомобиля: ");
+        car.setLicensePlate(scanner.nextLine());
 
-        String[] inputs = new String[5];
+        return car;
+    }
 
-        for (int i = 0; i < questions.length; i++) {
-            System.out.println(questions[i]);
-            if (i == 2) {
-                car.setYear(scanner.nextInt());
-            } else {
-                inputs[i] = scanner.next();
-            }
+    public Car collectExistingCar(Scanner scanner, Car car) {
+
+        System.out.println("Введите модель автомобиля [текущее название: " + car.getModel() + "]:");
+        String model = scanner.nextLine();
+        if(!model.isBlank()) {
+            car.setModel(model);
         }
 
-        car.setModel(inputs[0]);
-        car.setColor(inputs[1]);
-        car.setManufacturer(inputs[3]);
-        car.setLicensePlate(inputs[4]);
+        System.out.println("Введите цвет автомобиля [текущее название: " + car.getColor() + "]:");
+        String color = scanner.nextLine();
+        if(!color.isBlank()) {
+            car.setColor(color);
+        }
+
+        System.out.println("Введите год выпуска автомобиля [текущее название: " + car.getYear() + "]:");
+        String yearInput = scanner.nextLine();
+        if(!yearInput.isBlank()) {
+            car.setYear(Integer.parseInt(yearInput));
+        }
+
+        System.out.println("Введите производителя автомобиля [текущее название: " + car.getManufacturer() + "]:");
+        String manufacturer = scanner.nextLine();
+        if(!manufacturer.isBlank()) {
+            car.setManufacturer(manufacturer);
+        }
+
+        System.out.println("Введите номер автомобиля [текущее название: " + car.getLicensePlate() + "]:");
+        String licensePlate = scanner.nextLine();
+        if(!licensePlate.isBlank()) {
+            car.setLicensePlate(licensePlate);
+        }
 
         return car;
     }
