@@ -73,9 +73,9 @@ public class CarDatabaseProvider {
     }
 
 
-    public void updateCar(int id, Car car) throws SQLException {
+    public void updateCar(int id, Car car)  {
 
-        try (Connection connection =getConnection();
+        try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(
                      SqlQueries.UPDATE_BY_ID.getQuery())) {
 
@@ -87,7 +87,10 @@ public class CarDatabaseProvider {
             statement.setInt(6, id);
 
             int affected = statement.executeUpdate();
-            System.out.println("Отлично, машина с id номер " + affected + " обновлено");
+            if (affected > 0) {
+                System.out.println("The update was successful!");
+            }
+            System.out.println("Отлично, машина с id номер " + id + " обновлено");
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }
@@ -96,7 +99,7 @@ public class CarDatabaseProvider {
 
     public Car selectById(int id) {
         try (Connection connection = getConnection();
-             PreparedStatement statement = connection.prepareStatement("SELECT * FROM cars WHERE id = ?;")) {
+             PreparedStatement statement = connection.prepareStatement(SqlQueries.SELECT_BY_ID.getQuery())) {
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
 
@@ -106,13 +109,12 @@ public class CarDatabaseProvider {
 
             Car car = new Car();
 
-                car.setId(resultSet.getInt(1));
-                car.setModel(resultSet.getString(2));
-                car.setColor(resultSet.getString(3));
-                car.setYear(resultSet.getInt(4));
-                car.setManufacturer(resultSet.getString(5));
-                car.setLicensePlate(resultSet.getString(6));
-
+            car.setId(resultSet.getInt(1));
+            car.setModel(resultSet.getString(2));
+            car.setColor(resultSet.getString(3));
+            car.setYear(resultSet.getInt(4));
+            car.setManufacturer(resultSet.getString(5));
+            car.setLicensePlate(resultSet.getString(6));
 
 
             return car;

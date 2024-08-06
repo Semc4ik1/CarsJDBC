@@ -1,6 +1,5 @@
 package ru.gumenuk.connection;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -22,7 +21,7 @@ public class Main {
                             \s""");
 
 
-                int choice =Integer.parseInt(scanner.nextLine());
+                int choice = Integer.parseInt(scanner.nextLine());
 
 
                 switch (choice) {
@@ -33,10 +32,17 @@ public class Main {
                     }
                     case 2 -> {
                         System.out.println("Введите ID автомобиля для обновления");
-                        int id = Integer.parseInt(scanner.nextLine());
-                        Car existing = dbProvider.selectById(id);
-                        Car car = collector.collectExistingCar(scanner, existing);
-                        dbProvider.updateCar(id, car);
+                        try {
+                            int id = Integer.parseInt(scanner.nextLine());
+                            Car existing = dbProvider.selectById(id);
+                            Car car = collector.collectExistingCar(scanner, existing);
+                            dbProvider.updateCar(id, car);
+                        } catch (NumberFormatException e) {
+                            System.out.println("Неверный формат ID. Пожалуйста, введите число.");
+
+                        } catch (Exception e) {
+                            System.out.println("Автомобиля с таким ID не существует");
+                        }
                     }
                     case 3 -> {
                         System.out.print("Введите ID автомобиля для удаления: ");
@@ -52,14 +58,11 @@ public class Main {
                     }
                     case 5 -> {
                         System.out.println("Выход из программы.");
-                        scanner.close();
                         return;
                     }
                     default -> System.out.println("Неверный выбор. Пожалуйста, попробуйте снова.");
                 }
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         }
     }
 
