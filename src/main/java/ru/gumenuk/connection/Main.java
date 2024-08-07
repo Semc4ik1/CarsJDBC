@@ -40,7 +40,7 @@ public class Main {
                         } catch (NumberFormatException e) {
                             System.out.println("Неверный формат ID. Пожалуйста, введите число.");
 
-                        } catch (Exception e) {
+                        } catch (CarNotFoundException e) {
                             System.out.println("Автомобиля с таким ID не существует");
                         }
                     }

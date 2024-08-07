@@ -97,14 +97,14 @@ public class CarDatabaseProvider {
 
     }
 
-    public Car selectById(int id) {
+    public Car selectById(int id) throws CarNotFoundException {
         try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(SqlQueries.SELECT_BY_ID.getQuery())) {
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
 
             if (!resultSet.next()) {
-                throw new IllegalArgumentException("Cannot find car with id = " + id);
+                throw new CarNotFoundException("Cannot find car with id = " + id);
             }
 
             Car car = new Car();
